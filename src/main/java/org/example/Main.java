@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.controller.Controller;
 import org.example.model.Product;
+import org.example.model.Validation;
 
 import java.sql.Connection;
 
@@ -18,13 +19,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\nStock Management System");
+            System.out.println("\n======== Stock Management System ========");
             System.out.println("1. Write");
             System.out.println("2. Read");
             System.out.println("3. Update");
             System.out.println("4. Delete");
             System.out.println("5. Exit");
             System.out.print("Enter choice: ");
+
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -32,16 +34,29 @@ public class Main {
                 case 1:
                     System.out.println("\n======== Stock Management System ========");
                     System.out.print("Enter ID: ");
-                    int id = scanner.nextInt();
-                    System.out.print("Enter name: ");
-                    String name = scanner.next();
+                    int id = Validation.getValidInt(scanner);
+
+                    String name;
+                    while (true) {
+                        System.out.print("Enter Name: ");
+                        name = scanner.nextLine().trim();
+                        if (!name.isEmpty()) break;  // it check if name is not empty
+                        System.out.println("Name cannot be empty!!!");
+                    }
+
                     System.out.print("Enter price: ");
-                    double price = scanner.nextDouble();
+                    double price = Validation.getValidDouble(scanner);
+
                     System.out.print("Enter quantity: ");
-                    int quantity = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Enter import date (DD-MM-YYYY): ");
-                    String importDate = scanner.nextLine();
+                    int quantity = Validation.getValidInt(scanner);
+
+                    String importDate;
+                    while (true) {
+                        System.out.print("Enter Imported Date (DD-MM-YYYY): ");
+                        importDate = scanner.nextLine().trim();
+                        if (Validation.isValidDate(importDate)) break;  // Using Validation class
+                        System.out.println("Invalid date format! Plz follow this format DD-MM-YYYY.");
+                    }
 
                     Product newProduct = new Product(id, name, price, quantity, importDate);
                     ctrl.writeProduct(newProduct);

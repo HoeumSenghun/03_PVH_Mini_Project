@@ -5,9 +5,11 @@ import java.util.List;
 import org.example.Dao.ProductDao;
 import org.example.Dao.ProductDaoImp;
 import org.example.model.Product;
+import org.example.utils.DBConnection;
 import org.example.view.ProductView;
 
 public class ProductController {
+
     ProductDao productDao;
     ProductView productView;
 

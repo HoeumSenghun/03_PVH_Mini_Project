@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.model.Product;
 import org.example.model.ProductModel;
+import org.example.model.Unsave;
 import org.example.view.StoreView;
 import org.example.controller.Controller;
 
@@ -16,13 +17,14 @@ public class Main {
 
         while (true) {
             Controller controller = new Controller(model, view);
+            Unsave unsave = new Unsave();
             controller.displayProductData();
             view.displayMenu();
             String choice = view.getUserChoice();
 
             switch (choice) {
                 case "W":
-//                    controller.addProduct();
+                    controller.writeProduct();
                     break;
                 case "R":
 //                    controller.viewProduct();
@@ -42,6 +44,8 @@ public class Main {
                 case "S":
                     controller.searchProduct();
                     break;
+                case "Un":
+                    unsave.unSaveAdd();
                 case "E":
                     System.out.println("Exiting... Goodbye!");
                     return;

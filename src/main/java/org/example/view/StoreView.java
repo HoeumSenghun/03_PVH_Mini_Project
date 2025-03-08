@@ -38,8 +38,8 @@ public class StoreView {
     public void displayMenu() {
         System.out.println("            --------- Menu ---------            ");
         System.out.println(" N) Next Page   P) Previous Page   F) First Page   L) Last Page");
-        System.out.println(" W) Write       R) Read (id)        U) Update      D) Delete");
-        System.out.println(" S) Search(name)   Se) Set rows   Ba) Backup   Re) Restore");
+        System.out.println(" W) Write       R) Read (id)        U) Update      D) Delete   S) Search(name)");
+        System.out.println(" Sa) Save    Un) Unsaved   Se) Set rows   Ba) Backup   Re) Restore");
         System.out.println(" E) Exit");
         System.out.println("-----------------------------------------------");
     }

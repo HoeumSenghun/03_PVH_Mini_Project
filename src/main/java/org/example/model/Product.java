@@ -18,7 +18,6 @@ public class Product {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -26,15 +25,11 @@ public class Product {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
+    public double getPrice() {return price;}
     public void setPrice(double price) {
         this.price = price;
     }
@@ -42,7 +37,6 @@ public class Product {
     public int getQuantity() {
         return quantity;
     }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
@@ -50,7 +44,6 @@ public class Product {
     public String getImportDate() {
         return importDate;
     }
-
     public void setImportDate(String importDate) {
         this.importDate = importDate;
     }

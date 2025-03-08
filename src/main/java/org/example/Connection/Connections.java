@@ -1,4 +1,4 @@
-package Connection;
+package org.example.Connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,10 +14,10 @@ public class Connections {
         try {
             //Load Driver
             Class.forName("org.postgresql.Driver");
-            //Connection
+            //org.example.Connection
             con = DriverManager.getConnection(url, username, password);
             if(con.isValid(2)) {
-                System.out.println("Connection Successful");
+                System.out.println("org.example.Connection Successful");
             }
             return con;
         } catch (ClassNotFoundException | SQLException e) {

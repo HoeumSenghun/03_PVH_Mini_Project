@@ -7,6 +7,7 @@ import org.example.view.StoreView;
 public class Controller {
     private ProductModel productModel;
     private StoreView storeView;
+    Scanner scanner = new Scanner(System.in);
 
     public Controller(ProductModel productModel, StoreView storeView) {
         this.productModel = productModel;
@@ -23,6 +24,11 @@ public class Controller {
 
     public void readProduct(){
         // read product to unsaved
+        System.out.println("Enter id:");
+        int productId = scanner.nextInt();
+        Optional<Product>  product =  productModel.getProductById(productId);
+        storeView.displayTableRow(product);
+
     }
     public void writeProduct(){
         // write product

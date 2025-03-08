@@ -1,36 +1,45 @@
 package org.example;
 
-import java.sql.Connection;
-
-import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import org.example.view.StoreView;
+import org.example.controller.controller;
 
 public class Main {
     public static void main(String[] args) {
-        String url = "jdbc:postgresql://localhost:5432/stockManagement_db";
-        String username = "postgres";
-        String password = "root";
-        Connection con = null;
+        StoreView view = new StoreView();
+//        Controller controller = new Controller();
+        controller controller = new controller();
 
-        try {
-            //Load Driver
-            Class.forName("org.postgresql.Driver");
-            //Connection
-            con = DriverManager.getConnection(url, username, password);
-            if(con.isValid(2)) {
-                System.out.println("Connection Successful");
-            }
+        while (true) {
+            view.displayMenu();
+            String choice = view.getUserChoice();
 
-        } catch (ClassNotFoundException | SQLException e) {
-
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) { // Corrected exception
-                e.printStackTrace();
+            switch (choice) {
+                case "W":
+                    controller.addProduct();
+                    break;
+                case "R":
+                    controller.viewProduct();
+                    break;
+                case "U":
+                    controller.updateProduct();
+                    break;
+                case "D":
+                    controller.deleteProduct();
+                    break;
+                case "N":
+                    controller.nextPage();
+                    break;
+                case "P":
+                    controller.previousPage();
+                    break;
+                case "S":
+                    controller.searchProduct();
+                    break;
+                case "E":
+                    System.out.println("Exiting... Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid option! Please choose again.");
             }
         }
     }

@@ -30,6 +30,18 @@ public class controller {
     }
     public void  deleteProduct(){
         // delete logic
+        String sql = "DELETE FROM products WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int deleted = stmt.executeUpdate();
+            if (deleted > 0) {
+                System.out.println("Product deleted successfully!");
+            } else {
+                System.out.println("No product found with ID " + id);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error deleting product: " + e.getMessage());
+        }
     }
     /// =========== backup and restore
     public void backUp(){

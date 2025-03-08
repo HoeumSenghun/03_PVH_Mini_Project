@@ -2,16 +2,22 @@ package org.example;
 
 import org.example.model.Product;
 import org.example.model.ProductModel;
+import org.example.model.Unsave;
 import org.example.view.StoreView;
 import org.example.controller.Controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+        Scanner sc = new Scanner(System.in);
         StoreView view = new StoreView();
         ProductModel model = new ProductModel();
         System.out.println(model.getProducts());
+        boolean running = true;
+        Unsave unsave = new Unsave();
 
         while (true) {
             Controller controller = new Controller(model, view);
@@ -21,7 +27,7 @@ public class Main {
 
             switch (choice) {
                 case "W":
-//                    controller.addProduct();
+                    controller.writeProduct(unsave);
                     break;
                 case "R":
 //                    controller.viewProduct();
@@ -39,11 +45,16 @@ public class Main {
 //                    controller.previousPage();
                     break;
                 case "S":
-                    controller.searchProduct();
+                    System.out.print("Input Product Name:");
+                    String name = sc.nextLine();
+                    controller.searchProduct(name);
                     break;
+                case "UN":
+                    controller.unSaveProduct(unsave);
                 case "E":
                     System.out.println("Exiting... Goodbye!");
-                    return;
+                    running = false;  // Gracefully exit the loop
+                    break;
                 default:
                     System.out.println("Invalid option! Please choose again.");
             }

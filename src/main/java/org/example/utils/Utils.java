@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class Utils {
     // connection method
+    //root
     static String password= "password";
     static String userName = "postgres";
 

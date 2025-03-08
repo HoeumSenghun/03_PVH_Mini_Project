@@ -28,7 +28,7 @@ public class Controller {
     private StoreView storeView;
     Scanner scanner = new Scanner(System.in);
     //arraylist to store temporary product
-    private List<Product> tempProduct = new ArrayList<>();
+    List<Product> tempProduct = new ArrayList<>();
     //static variables for writeProduct
     int id;
     String name;

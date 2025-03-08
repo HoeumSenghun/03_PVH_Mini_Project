@@ -7,8 +7,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.Date;
+
 import org.example.model.ProductModel;
+import org.example.model.Unsave;
 import org.example.utils.Utils;
 import org.example.model.Unsave;
 import org.example.model.UpdateProduct;
@@ -23,6 +27,15 @@ public class Controller {
     private ProductModel productModel;
     private StoreView storeView;
     Scanner scanner = new Scanner(System.in);
+    //arraylist to store temporary product
+    private List<Product> tempProduct = new ArrayList<>();
+    //static variables for writeProduct
+    int id;
+    String name;
+    double price;
+    int qty;
+    String date;
+
 
     public Controller(ProductModel productModel, StoreView storeView) {
         this.productModel = productModel;
@@ -47,6 +60,23 @@ public class Controller {
     }
     public void writeProduct(){
         // write product
+        id = tempProduct.size();
+        date = String.valueOf(LocalDate.now());
+        System.out.println("==========) INSERT AN PRODUCT (==========");
+        System.out.println("ID:\t" + id);
+        System.out.print("Input Product Name:\t");
+        name = scanner.next();
+        scanner.nextLine();
+        System.out.print("Input Product Price:\t");
+        price = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Input Product Quantity:\t");
+        qty = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Imported Date:\t"+date);
+        tempProduct.add(new Product(id, name, price, qty, date));
+        storeView.displayProducts(tempProduct);
+
     }
     public void saveProduct(){
         //save product to database

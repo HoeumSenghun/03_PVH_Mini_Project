@@ -16,7 +16,6 @@ public class Controller {
     //Method to fetch and display products
     public void displayProductData(){
         List<Product> products = productModel.getProducts();
-
         storeView.displayProducts(products);
     }
 
@@ -39,8 +38,13 @@ public class Controller {
     public void updateProduct(){
         // update pro
     }
-    public void searchProduct(){
-        //search logic
+    public void searchProduct(String name){
+        List<Product> products = productModel.getProductsByName(name);
+        if (products.isEmpty()){
+            System.out.println("No product found with name " + name);
+        }else{
+            storeView.searchProductByName(products);
+        }
     }
     public void  deleteProduct(){
         // delete logic

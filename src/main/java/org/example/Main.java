@@ -6,9 +6,11 @@ import org.example.view.StoreView;
 import org.example.controller.Controller;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         StoreView view = new StoreView();
         ProductModel model = new ProductModel();
         System.out.println(model.getProducts());
@@ -39,7 +41,9 @@ public class Main {
 //                    controller.previousPage();
                     break;
                 case "S":
-                    controller.searchProduct();
+                    System.out.print("Input Product Name:");
+                    String name = sc.nextLine();
+                    controller.searchProduct(name);
                     break;
                 case "E":
                     System.out.println("Exiting... Goodbye!");

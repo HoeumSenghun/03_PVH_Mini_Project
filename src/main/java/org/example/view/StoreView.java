@@ -48,4 +48,25 @@ public class StoreView {
         System.out.print("=> Choose an option: ");
         return scanner.nextLine().trim().toUpperCase();
     }
+
+    public void searchProductByName(List<Product> products){
+        // Table header
+        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+        table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell("Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell("Import Date", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+
+        //Loop Product
+        products.stream().forEach(pro -> {
+            table.addCell(String.valueOf(pro.getId()),center );
+            table.addCell(pro.getName(),center);
+            table.addCell(String.valueOf(pro.getPrice()),center );
+            table.addCell(String.valueOf(pro.getQuantity()),center );
+            table.addCell(String.valueOf(pro.getImportDate()),center );
+
+        });
+        System.out.println(table.render());
+    }
 }

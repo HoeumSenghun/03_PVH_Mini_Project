@@ -1,38 +1,35 @@
 package org.example.view;
-
+import java.util.*;
 import org.example.model.Product;
+import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.Table;
 import org.nocrala.tools.texttablefmt.CellStyle;
 import org.nocrala.tools.texttablefmt.BorderStyle;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class StoreView {
     private Scanner scanner = new Scanner(System.in);
+    CellStyle center = new CellStyle(CellStyle.HorizontalAlign.CENTER);
 
     public void displayProducts(List<Product> products) {
-        if (products.isEmpty()) {
-            System.out.println("No products available!");
-            return;
-        }
-
-        // Define table with 5 columns
-        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER);
+        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
         table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Import Date", new CellStyle(CellStyle.HorizontalAlign.CENTER));
 
-        // Add products to table
-        for (Product p : products) {
-            table.addCell(String.valueOf(p.getId()));
-            table.addCell(p.getName());
-            table.addCell(String.format("%.2f", p.getUnitPrice()));
-            table.addCell(String.valueOf(p.getQuantity()));
-            table.addCell(p.getImportDate());
-        }
+        //Loop Product
+        products.stream().forEach(pro -> {
+            table.addCell(String.valueOf(pro.getId()),center );
+            table.addCell(pro.getName(),center);
+            table.addCell(String.valueOf(pro.getPrice()),center );
+            table.addCell(String.valueOf(pro.getQuantity()),center );
+            table.addCell(String.valueOf(pro.getImportDate()),center );
+        });
 
         // Print table
         System.out.println(table.render());

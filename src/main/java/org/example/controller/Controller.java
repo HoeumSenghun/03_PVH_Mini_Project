@@ -1,15 +1,25 @@
 package org.example.controller;
-
 import org.example.model.Product;
+import java.util.*;
+import org.example.model.ProductModel;
 import org.example.view.StoreView;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-public class controller {
-    private Product product;
+public class Controller {
+    private ProductModel productModel;
     private StoreView storeView;
+
+    public Controller(ProductModel productModel, StoreView storeView) {
+        this.productModel = productModel;
+        this.storeView = storeView;
+    }
+
+    //Method to fetch and display products
+    public void displayProductData(){
+        List<Product> products = productModel.getProducts();
+
+        storeView.displayProducts(products);
+    }
+
 
     public void readProduct(){
         // read product to unsaved

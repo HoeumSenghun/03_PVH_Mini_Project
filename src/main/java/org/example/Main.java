@@ -1,15 +1,21 @@
 package org.example;
 
+import org.example.model.Product;
+import org.example.model.ProductModel;
 import org.example.view.StoreView;
-import org.example.controller.controller;
+import org.example.controller.Controller;
+
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
         StoreView view = new StoreView();
-//        Controller controller = new Controller();
-        controller controller = new controller();
+        ProductModel model = new ProductModel();
+        System.out.println(model.getProducts());
 
         while (true) {
+            Controller controller = new Controller(model, view);
+            controller.displayProductData();
             view.displayMenu();
             String choice = view.getUserChoice();
 

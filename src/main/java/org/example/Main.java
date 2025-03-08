@@ -17,18 +17,18 @@ public class Main {
         System.out.println(model.getProducts());
         boolean running = true;
 
-        while (running) {
+        while (true) {
             Controller controller = new Controller(model, view);
             controller.displayProductData();
             view.displayMenu();
-            String choice = view.getUserChoice().toUpperCase();
+            String choice = view.getUserChoice();
 
             switch (choice) {
                 case "W":
-                    controller.writeProduct();
+//                    controller.addProduct();
                     break;
                 case "R":
-                    controller.readProduct();
+//                    controller.viewProduct();
                     break;
                 case "U":
                     controller.updateProduct();

@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import java.sql.*;
 import java.util.*;
 import org.example.model.ProductModel;
+import org.example.utils.Utils;
 import org.example.model.Unsave;
 import org.example.model.UpdateProduct;
 import org.example.utils.Utils;
@@ -29,6 +32,7 @@ public class Controller {
     //Method to fetch and display products
     public void displayProductData(){
         List<Product> products = productModel.getProducts();
+
         storeView.displayProducts(products);
     }
 
@@ -285,8 +289,38 @@ public class Controller {
             storeView.searchProductByName(products);
         }
     }
-    public void  deleteProduct(){
+    public void  deleteProduct() throws RuntimeException, SQLException {
         // delete logic
+//        String deleteSQL = "CALL delete_stock_item(?);";
+//        String deleteQuery = "SELECT * FROM stock_tb;";
+//        List<Product> products = productModel.getProducts();
+
+        Connection conn = Utils.connection();
+        System.out.println("==========) DELETE PRODUCT BY ID (==========");
+        System.out.print("Input ID:\t");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        int deleteResult =0;
+        try
+            {
+                PreparedStatement pstmt = conn.prepareStatement("CALL delete_stock_item(?)");
+                pstmt.setInt(1, id);
+                deleteResult = pstmt.executeUpdate();
+                if (deleteResult > 0){
+                    System.out.println("Product deleted successfully!");
+                } else {
+                    System.out.println("No product found with ID " + id);
+                }
+//            System.out.print("Delete record by ID");
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e){
+                throw new RuntimeException(e);
+            }
+        }
 //        String sql = "DELETE FROM products WHERE id = ?";
 //        Connection connection;
 //        try (PreparedStatement stmt = connection.prepareStatement(sql)) {

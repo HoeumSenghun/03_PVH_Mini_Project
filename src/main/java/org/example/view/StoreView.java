@@ -39,7 +39,7 @@ public class StoreView {
         System.out.println("            --------- Menu ---------            ");
         System.out.println(" N) Next Page   P) Previous Page   F) First Page   L) Last Page");
         System.out.println(" W) Write       R) Read (id)        U) Update      D) Delete");
-        System.out.println(" S) Search(name)   Se) Set rows   Ba) Backup   Re) Restore");
+        System.out.println(" S) Search(name)   Se) Set rows  sa) Save    Un) UnSaved  Ba) Backup   Re) Restore");
         System.out.println(" E) Exit");
         System.out.println("-----------------------------------------------");
     }

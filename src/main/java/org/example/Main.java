@@ -46,6 +46,8 @@ public class Main {
                     String name = sc.nextLine();
                     controller.searchProduct(name);
                     break;
+                case "UN":
+                    controller.unSaveProduct();
                 case "E":
                     System.out.println("Exiting... Goodbye!");
                     return;

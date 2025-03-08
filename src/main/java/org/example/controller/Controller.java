@@ -79,8 +79,18 @@ public class Controller {
         unsave.unSaveProducts.add(new Product(id,name,price,qty,date));
 
     }
-    public void saveProduct(){
-        //save product to database
+    public void saveProduct(Unsave unsave) throws SQLException {
+        PreparedStatement pstm = Utils.connection().prepareStatement("INSERT INTO stock_tb(name,unit_price,stock_qty) VALUES (name= ?,unit_price=?,stock_qty=?)");
+        pstm.setString(1,name);
+        pstm.setDouble(2,price);
+        pstm.setInt(3,qty);
+        try{
+            pstm.executeQuery();
+            System.out.println("Success");
+        }catch (Exception e){
+            System.out.println("cannot add");
+        }
+
     }
     public void unSaveProduct(Unsave unsave){
         Scanner scanner = new Scanner(System.in);

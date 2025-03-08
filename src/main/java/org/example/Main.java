@@ -51,6 +51,9 @@ public class Main {
                     break;
                 case "UN":
                     controller.unSaveProduct(unsave);
+                    break;
+                case "SA":
+                    controller.saveProduct(unsave);
                 case "E":
                     System.out.println("Exiting... Goodbye!");
                     running = false;  // Gracefully exit the loop

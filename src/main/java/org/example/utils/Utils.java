@@ -6,14 +6,15 @@ import java.sql.SQLException;
 
 public class Utils {
     // connection method
-    static String password= "root";
+    //root
+    static String password= "password";
     static String userName = "postgres";
 
     public static Connection connection () throws SQLException {
         Connection connection = null;
-
+        //stockManagement_db
         try{
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/stockManagement_db",userName,password);
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/stocks",userName,password);
             System.out.println("connection successfully");
         }catch (SQLException e){
             System.out.println("connection failed");

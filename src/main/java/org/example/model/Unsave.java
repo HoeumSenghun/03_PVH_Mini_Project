@@ -12,9 +12,9 @@ public class Unsave {
     private List<Product> unSvaeProducts = new ArrayList<>();
     Controller controller = new Controller(productModel, storeView);
 
-    public void unSaveAdd() {
+    public void unSaveAdd(Product product) {
         // show the uns product method here
-        controller.writeProduct();
+//        controller.displayWriteProduct();
 
 
     }

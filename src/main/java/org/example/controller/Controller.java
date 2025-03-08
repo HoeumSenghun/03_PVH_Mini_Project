@@ -16,7 +16,7 @@ public class Controller {
     private StoreView storeView;
     static Scanner scanner = new Scanner(System.in);
     //arraylist to store temporary product
-    private List<Product> tempProduct = new ArrayList<>();
+    private List<Product> tempProduct = new ArrayList<Product>();
 //    private Connection conn;
 //    private String sql = "";
 //    private String qry = "";
@@ -49,7 +49,7 @@ public class Controller {
     }
     public void writeProduct(){
         // write product
-        id = tempProduct.size
+        id = tempProduct.size();
         date = String.valueOf(LocalDate.now());
         System.out.println("==========) INSERT AN PRODUCT (==========");
         System.out.println("ID:\t" + id);
@@ -64,15 +64,13 @@ public class Controller {
         scanner.nextLine();
         System.out.println("Imported Date:\t"+date);
         tempProduct.add(new Product(id, name, price, qty, date));
-        storeView.displayProducts(tempProduct);
+
 
     }
-
-//    public void displayWriteProduct(){
-//        while (true){
-//            tempProduct.add(new Product(id, name, price, qty, date));
-//            storeView.displayProducts(tempProduct);
-//        }
+//
+//
+//    public List<Product> displayWriteProduct(){
+//        return tempProduct;
 //    }
     public void saveProduct(){
         //save product to database

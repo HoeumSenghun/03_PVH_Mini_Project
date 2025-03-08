@@ -42,6 +42,8 @@ public class Main {
                 case "S":
                     controller.searchProduct();
                     break;
+                case "UN":
+                    controller.unSaveProduct();
                 case "E":
                     System.out.println("Exiting... Goodbye!");
                     return;

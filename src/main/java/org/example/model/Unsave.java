@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Unsave {
-    private List<Product> unSvaeProducts = new ArrayList<>();
+    public List<Product> unSaveProducts = new ArrayList<>();
     public List<UpdateProduct> unSaveUpdate = new ArrayList<>();
 
     public void unSaveAdd(Product product) {

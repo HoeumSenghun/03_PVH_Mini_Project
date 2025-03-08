@@ -5,11 +5,12 @@ import org.example.model.ProductModel;
 import org.example.view.StoreView;
 import org.example.controller.Controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException{
         Scanner sc = new Scanner(System.in);
         StoreView view = new StoreView();
         ProductModel model = new ProductModel();

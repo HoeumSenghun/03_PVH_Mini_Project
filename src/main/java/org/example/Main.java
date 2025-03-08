@@ -15,19 +15,20 @@ public class Main {
         StoreView view = new StoreView();
         ProductModel model = new ProductModel();
         System.out.println(model.getProducts());
+        boolean running = true;
 
-        while (true) {
+        while (running) {
             Controller controller = new Controller(model, view);
             controller.displayProductData();
             view.displayMenu();
-            String choice = view.getUserChoice();
+            String choice = view.getUserChoice().toUpperCase();
 
             switch (choice) {
                 case "W":
-//                    controller.addProduct();
+                    controller.writeProduct();
                     break;
                 case "R":
-//                    controller.viewProduct();
+                    controller.readProduct();
                     break;
                 case "U":
                     controller.updateProduct();
@@ -50,7 +51,8 @@ public class Main {
                     controller.unSaveProduct();
                 case "E":
                     System.out.println("Exiting... Goodbye!");
-                    return;
+                    running = false;  // Gracefully exit the loop
+                    break;
                 default:
                     System.out.println("Invalid option! Please choose again.");
             }

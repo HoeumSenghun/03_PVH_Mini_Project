@@ -15,10 +15,10 @@ public class Main {
 
             switch (choice) {
                 case "W":
-                    controller.addProduct();
+//                    controller.addProduct();
                     break;
                 case "R":
-                    controller.viewProduct();
+//                    controller.viewProduct();
                     break;
                 case "U":
                     controller.updateProduct();
@@ -27,10 +27,10 @@ public class Main {
                     controller.deleteProduct();
                     break;
                 case "N":
-                    controller.nextPage();
+//                    controller.nextPage();
                     break;
                 case "P":
-                    controller.previousPage();
+//                    controller.previousPage();
                     break;
                 case "S":
                     controller.searchProduct();

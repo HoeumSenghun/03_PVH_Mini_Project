@@ -27,9 +27,7 @@ public class Controller {
     private ProductModel productModel;
     private StoreView storeView;
     Scanner scanner = new Scanner(System.in);
-    //arraylist to store temporary product
     List<Product> tempProduct = new ArrayList<>();
-    //static variables for writeProduct
     int id;
     String name;
     double price;
@@ -52,7 +50,6 @@ public class Controller {
         storeView.displayProducts(products);
     }
 
-
     public void readProduct(){
         // read product to unsaved
         System.out.println("Enter id:");
@@ -61,34 +58,58 @@ public class Controller {
         storeView.displayTableRow(product);
 
     }
-    public void writeProduct(){
+    public void writeProduct(Unsave unsave){
         // write product
         id = tempProduct.size();
         date = String.valueOf(LocalDate.now());
         System.out.println("==========) INSERT AN PRODUCT (==========");
         System.out.println("ID:\t" + id);
-        System.out.print("Input Product Name:\t");
+        System.out.print("Input Product Name: ");
         name = scanner.next();
         scanner.nextLine();
-        System.out.print("Input Product Price:\t");
+        System.out.print("Input Product Price: ");
         price = scanner.nextDouble();
         scanner.nextLine();
-        System.out.print("Input Product Quantity:\t");
+        System.out.print("Input Product Quantity: ");
         qty = scanner.nextInt();
         scanner.nextLine();
         System.out.println("Imported Date:\t"+date);
         tempProduct.add(new Product(id, name, price, qty, date));
         storeView.displayProducts(tempProduct);
+        unsave.unSaveProducts.add(new Product(id, name, price, qty, date));
+    }
+    public void saveProduct(Unsave unsave) throws SQLException {
+        String saveOption;
+        System.out.println("[UI] for save Insert and [UU] for save update");
+        saveOption = scanner.nextLine().toLowerCase();
+        switch (saveOption) {
+            case "ui":
+                if (unsave.unSaveProducts.size() > 0) {
+                    for (Product product : unsave.unSaveProducts) {
+                        product.getName();
+                        product.getPrice();
+                        product.getQuantity();
+                        PreparedStatement preparedStatement = Utils.connection().prepareStatement("INSERT INTO stock_tb(name,unit_price,stock_qty) VALUES (?,?,?)");
+                        preparedStatement.setString(1, product.getName());
+                        preparedStatement.setDouble(2, product.getPrice());
+                        preparedStatement.setInt(3, product.getQuantity());
+                        try{
+                            preparedStatement.executeQuery();
+                            System.out.println(product.getName() + "has been save successfully");
+                        }catch (SQLException e){
+                            System.out.println(e.getMessage());
+                        }
+                        unsave.unSaveProducts.remove(product);
+                        break;
+                    }
+                }
+                System.out.print("Press Enter to continue...");
+                scanner.nextLine();
+                break;
+        }
 
-//        Unsave unsave = new Unsave();
-//        unsave.unSaveProducts.add(new Product(id, name, price, qty, date));
-//        System.out.println(unsave.unSaveProducts.getFirst().toString());;
     }
-    public void saveProduct(){
-        //save product to database
-    }
-    public void unSaveProduct(){
-//        storeView.displayProducts();
+    public void unSaveProduct(Unsave unsave){
         Scanner scanner = new Scanner(System.in);
         String saveOpt;
         while (true){
@@ -103,59 +124,43 @@ public class Controller {
             System.out.println("Invalid option! ");
 
         }
-        Unsave unsave = new Unsave();
         Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
         table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Import Date", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        if (tempProduct.isEmpty()){
-            System.out.println("There is no product to update");
-            return;
+
+        if(saveOpt.equalsIgnoreCase("ui")){
+            if(unsave.unSaveProducts.size()>=0){
+                unsave.unSaveProducts.forEach((un)->{
+                    table.addCell(String.valueOf(un.getId()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                    table.addCell(un.getName(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                    table.addCell(String.valueOf(un.getPrice()) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                    table.addCell(String.valueOf(un.getQuantity()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                    table.addCell(un.getImportDate(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                });
+                System.out.println(table.render());
+            }else{
+                System.out.println("there no unsave product");
+            }
+
+        }else if(saveOpt.equalsIgnoreCase("uu")){
+            if(unsave.unSaveUpdate.size()>=0){
+                unsave.unSaveUpdate.forEach((un)->{
+                    table.addCell(String.valueOf(un.getId()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                    table.addCell(un.getName(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                    table.addCell(String.valueOf(un.getPrice()) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                    table.addCell(String.valueOf(un.getQuantity()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                    table.addCell(un.getImportDate(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+                });
+                System.out.println(table.render());
+            }else{
+                System.out.println("there no unsave update");
+            }
         }
-
-        productModel.insertUnsaveData(tempProduct);
-        tempProduct.clear();
-
-
-//        if(saveOpt.equalsIgnoreCase("ui")){
-////           unsave.unSaveProducts.add(new Product(1,"cola",2.5,7,"20-20-20"));
-////           unsave.unSaveProducts.add(new Product(1,"cola",2.5,7,"20-20-20"));
-//            System.out.println(unsave.unSaveProducts.getFirst().toString());
-//            if(unsave.unSaveProducts.size()>=0){
-//                unsave.unSaveProducts.forEach((un)->{
-//                    table.addCell(String.valueOf(un.getId()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                    table.addCell(un.getName(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                    table.addCell(String.valueOf(un.getPrice()) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                    table.addCell(String.valueOf(un.getQuantity()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                    table.addCell(un.getImportDate(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                });
-//                System.out.println(table.render());
-//            }else{
-//                System.out.println("there no unsave product");
-//            }
-//
-//        }else if(saveOpt.equalsIgnoreCase("uu")){
-////            unsave.unSaveUpdate.add(new UpdateProduct(1,"cola",2.5,7,"20-20-20"));
-////            unsave.unSaveUpdate.add(new UpdateProduct(1,"cola",2.5,7,"20-20-20"));
-//            if(unsave.unSaveUpdate.size()>=0){
-//                unsave.unSaveUpdate.forEach((un)->{
-//                    table.addCell(String.valueOf(un.getId()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                    table.addCell(un.getName(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                    table.addCell(String.valueOf(un.getPrice()) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                    table.addCell(String.valueOf(un.getQuantity()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                    table.addCell(un.getImportDate(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-//                });
-//                System.out.println(table.render());
-//            }else{
-//                System.out.println("there no unsave update");
-//            }
-//
-//        }
-
-
-
+        System.out.print("Press enter to continue...");
+        scanner.nextLine();
     }
 
 
@@ -174,8 +179,7 @@ public class Controller {
 
 
 
-    public void updateProduct() throws SQLException {
-        Unsave unsave = new Unsave();
+    public void updateProduct(Unsave unsave) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         int Updateid;
 
@@ -334,13 +338,10 @@ public class Controller {
 
         if (isUpdated) {
             unsave.unSaveUpdate.add(new UpdateProduct(id, name, price, qty, date));
-            // test print
-//            System.out.println(unsave.unSaveUpdate.getFirst().toString());
         } else {
             System.out.println("No changes were made.");
         }
-
-        System.out.println("Press Enter to continue...");
+        System.out.print("Press Enter to continue...");
         scanner.nextLine();
     }
     public void searchProduct(String name){
@@ -352,11 +353,6 @@ public class Controller {
         }
     }
     public void  deleteProduct() throws RuntimeException, SQLException {
-        // delete logic
-//        String deleteSQL = "CALL delete_stock_item(?);";
-//        String deleteQuery = "SELECT * FROM stock_tb;";
-//        List<Product> products = productModel.getProducts();
-
         Connection conn = Utils.connection();
         System.out.println("==========) DELETE PRODUCT BY ID (==========");
         System.out.print("Input ID:\t");
@@ -373,7 +369,6 @@ public class Controller {
                 } else {
                     System.out.println("No product found with ID " + id);
                 }
-//            System.out.print("Delete record by ID");
         } catch (RuntimeException | SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -383,19 +378,6 @@ public class Controller {
                 throw new RuntimeException(e);
             }
         }
-//        String sql = "DELETE FROM products WHERE id = ?";
-//        Connection connection;
-//        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-//            stmt.setInt(1, id);
-//            int deleted = stmt.executeUpdate();
-//            if (deleted > 0) {
-//                System.out.println("Product deleted successfully!");
-//            } else {
-//                System.out.println("No product found with ID " + id);
-//            }
-//        } catch (SQLException e) {
-//            System.err.println("Error deleting product: " + e.getMessage());
-//        }
     }
     /// =========== backup and restore
     public void backUp(){

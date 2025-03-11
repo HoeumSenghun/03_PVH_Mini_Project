@@ -17,23 +17,23 @@ public class Main {
         ProductModel model = new ProductModel();
         System.out.println(model.getProducts());
         boolean running = true;
+        Unsave unsave = new Unsave();
 
-        while (true) {
+        while (running) {
             Controller controller = new Controller(model, view);
-            Unsave unsave = new Unsave();
             controller.displayProductData();
             view.displayMenu();
             String choice = view.getUserChoice();
 
             switch (choice) {
                 case "W":
-                    controller.writeProduct();
+                    controller.writeProduct(unsave);
                     break;
                 case "R":
                     controller.readProduct();
                     break;
                 case "U":
-                    controller.updateProduct();
+                    controller.updateProduct(unsave);
                     break;
                 case "D":
                     controller.deleteProduct();
@@ -49,11 +49,15 @@ public class Main {
                     String name = sc.nextLine();
                     controller.searchProduct(name);
                     break;
+                case "SA" :
+                    controller.saveProduct(unsave);
+                    break;
                 case "UN":
-                    controller.unSaveProduct();
+                    controller.unSaveProduct(unsave);
+                    break;
                 case "E":
                     System.out.println("Exiting... Goodbye!");
-                    running = false;  // Gracefully exit the loop
+                    running = false;
                     break;
                 default:
                     System.out.println("Invalid option! Please choose again.");

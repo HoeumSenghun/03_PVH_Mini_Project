@@ -58,6 +58,31 @@ public class ProductModel {
         return Optional.empty();
     }
 
+    public void insertUnsaveData(List<Product> products) {
+        try {
+            Connection  conn = Utils.connection();
+            String sql = "INSERT INTO stock_tb VALUES (?,?,?,?,?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+//            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            for (Product product : products) {
+                ps.setInt(1, product.getId());
+                ps.setString(2, product.getName());
+                ps.setDouble(3, product.getPrice());
+                ps.setInt(4, product.getQuantity());
+                ps.setString(5, product.getImportDate());
+                ps.addBatch();
+            }
+
+            ps.execute();
+            System.out.println("Insert Successful");
+            conn.close();
+//            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     // Method get search product by name
     public List<Product> getProductsByName(String name) {
         List<Product> productsName = new ArrayList<>();

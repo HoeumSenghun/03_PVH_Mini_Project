@@ -36,16 +36,19 @@ public class Controller {
     int qty;
     String date;
 
-
+    // Contructor with parameter
     public Controller(ProductModel productModel, StoreView storeView) {
         this.productModel = productModel;
         this.storeView = storeView;
+    }
+    // Default Contructor
+    public Controller(){
+
     }
 
     //Method to fetch and display products
     public void displayProductData(){
         List<Product> products = productModel.getProducts();
-
         storeView.displayProducts(products);
     }
 
@@ -68,7 +71,7 @@ public class Controller {
         name = scanner.next();
         scanner.nextLine();
         System.out.print("Input Product Price:\t");
-        price = scanner.nextInt();
+        price = scanner.nextDouble();
         scanner.nextLine();
         System.out.print("Input Product Quantity:\t");
         qty = scanner.nextInt();
@@ -77,11 +80,15 @@ public class Controller {
         tempProduct.add(new Product(id, name, price, qty, date));
         storeView.displayProducts(tempProduct);
 
+//        Unsave unsave = new Unsave();
+//        unsave.unSaveProducts.add(new Product(id, name, price, qty, date));
+//        System.out.println(unsave.unSaveProducts.getFirst().toString());;
     }
     public void saveProduct(){
         //save product to database
     }
     public void unSaveProduct(){
+//        storeView.displayProducts();
         Scanner scanner = new Scanner(System.in);
         String saveOpt;
         while (true){
@@ -89,8 +96,10 @@ public class Controller {
             System.out.print("Enter you option: ");
             saveOpt = scanner.nextLine();
             if(saveOpt.equalsIgnoreCase("ui") || saveOpt.equalsIgnoreCase("uu") || saveOpt.equalsIgnoreCase("b")){
+
                 break;
             }
+
             System.out.println("Invalid option! ");
 
         }
@@ -101,47 +110,70 @@ public class Controller {
         table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Import Date", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-
-        if(saveOpt.equalsIgnoreCase("ui")){
-//           unsave.unSaveProducts.add(new Product(1,"cola",2.5,7,"20-20-20"));
-//           unsave.unSaveProducts.add(new Product(1,"cola",2.5,7,"20-20-20"));
-            if(unsave.unSaveProducts.size()>0){
-                unsave.unSaveProducts.forEach((un)->{
-                    table.addCell(String.valueOf(un.getId()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                    table.addCell(un.getName(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                    table.addCell(String.valueOf(un.getPrice()) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                    table.addCell(String.valueOf(un.getQuantity()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                    table.addCell(un.getImportDate(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                });
-                System.out.println(table.render());
-            }else{
-                System.out.println("there no unsave product");
-            }
-
-        }else if(saveOpt.equalsIgnoreCase("uu")){
-//            unsave.unSaveUpdate.add(new UpdateProduct(1,"cola",2.5,7,"20-20-20"));
-//            unsave.unSaveUpdate.add(new UpdateProduct(1,"cola",2.5,7,"20-20-20"));
-            if(unsave.unSaveUpdate.size()>0){
-                unsave.unSaveUpdate.forEach((un)->{
-                    table.addCell(String.valueOf(un.getId()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                    table.addCell(un.getName(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                    table.addCell(String.valueOf(un.getPrice()) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                    table.addCell(String.valueOf(un.getQuantity()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                    table.addCell(un.getImportDate(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-                });
-                System.out.println(table.render());
-            }else{
-                System.out.println("there no unsave update");
-            }
-
+        if (tempProduct.isEmpty()){
+            System.out.println("There is no product to update");
+            return;
         }
+
+        productModel.insertUnsaveData(tempProduct);
+        tempProduct.clear();
+
+
+//        if(saveOpt.equalsIgnoreCase("ui")){
+////           unsave.unSaveProducts.add(new Product(1,"cola",2.5,7,"20-20-20"));
+////           unsave.unSaveProducts.add(new Product(1,"cola",2.5,7,"20-20-20"));
+//            System.out.println(unsave.unSaveProducts.getFirst().toString());
+//            if(unsave.unSaveProducts.size()>=0){
+//                unsave.unSaveProducts.forEach((un)->{
+//                    table.addCell(String.valueOf(un.getId()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                    table.addCell(un.getName(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                    table.addCell(String.valueOf(un.getPrice()) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                    table.addCell(String.valueOf(un.getQuantity()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                    table.addCell(un.getImportDate(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                });
+//                System.out.println(table.render());
+//            }else{
+//                System.out.println("there no unsave product");
+//            }
+//
+//        }else if(saveOpt.equalsIgnoreCase("uu")){
+////            unsave.unSaveUpdate.add(new UpdateProduct(1,"cola",2.5,7,"20-20-20"));
+////            unsave.unSaveUpdate.add(new UpdateProduct(1,"cola",2.5,7,"20-20-20"));
+//            if(unsave.unSaveUpdate.size()>=0){
+//                unsave.unSaveUpdate.forEach((un)->{
+//                    table.addCell(String.valueOf(un.getId()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                    table.addCell(un.getName(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                    table.addCell(String.valueOf(un.getPrice()) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                    table.addCell(String.valueOf(un.getQuantity()), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                    table.addCell(un.getImportDate(), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+//                });
+//                System.out.println(table.render());
+//            }else{
+//                System.out.println("there no unsave update");
+//            }
+//
+//        }
 
 
 
     }
+
+
+
+
+
     public void getProduct(){
         //get product from database
     }
+
+
+
+
+
+
+
+
+
     public void updateProduct() throws SQLException {
         Unsave unsave = new Unsave();
         Scanner scanner = new Scanner(System.in);

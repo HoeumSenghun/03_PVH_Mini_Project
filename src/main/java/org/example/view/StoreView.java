@@ -15,7 +15,12 @@ public class StoreView {
     CellStyle center = new CellStyle(CellStyle.HorizontalAlign.CENTER);
 
     public void displayProducts(List<Product> products) {
-        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+        Table table = new Table(5, BorderStyle.UNICODE_BOX, ShownBorders.ALL);
+        table.setColumnWidth(0,15,15);
+        table.setColumnWidth(1,15,15);
+        table.setColumnWidth(2,15,15);
+        table.setColumnWidth(3,15,15);
+        table.setColumnWidth(4,15,15);
         table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
@@ -51,7 +56,12 @@ public class StoreView {
 
     public void searchProductByName(List<Product> products){
         // Table header
-        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+        Table table = new Table(5, BorderStyle.UNICODE_BOX, ShownBorders.SURROUND_HEADER_FOOTER_AND_COLUMNS);
+        table.setColumnWidth(0,15,15);
+        table.setColumnWidth(1,15,15);
+        table.setColumnWidth(2,15,15);
+        table.setColumnWidth(3,15,15);
+        table.setColumnWidth(4,15,15);
         table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));

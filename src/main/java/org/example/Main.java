@@ -30,7 +30,7 @@ public class Main {
                     controller.writeProduct();
                     break;
                 case "R":
-//                    controller.viewProduct();
+                    controller.readProduct();
                     break;
                 case "U":
                     controller.updateProduct();

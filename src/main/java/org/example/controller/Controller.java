@@ -24,6 +24,12 @@ import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.Table;
 
 public class Controller {
+    final String red = "\u001b[31m";
+    final String green = "\u001b[32m";
+    final String yellow = "\u001b[33m";
+    final String reset = "\u001b[0m";
+    final String blue = "\u001B[34m";
+
     private ProductModel productModel;
     private StoreView storeView;
     Scanner scanner = new Scanner(System.in);
@@ -55,7 +61,7 @@ public class Controller {
         int productId = scanner.nextInt();
         Optional<Product>  product =  productModel.getProductById(productId);
         storeView.displayTableRow(product);
-        System.out.print("Enter to continues... ");
+        System.out.println("Enter to continues... ");
         scanner.nextLine();
 
     }
@@ -162,6 +168,11 @@ public class Controller {
             System.out.println("Invalid option! ");
         }
         Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+        table.setColumnWidth(0, 30, 30);
+        table.setColumnWidth(1, 30, 30);
+        table.setColumnWidth(2, 30, 30);
+        table.setColumnWidth(3, 30, 30);
+        table.setColumnWidth(4, 30, 30);
         table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
         table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
@@ -236,11 +247,16 @@ public class Controller {
         ResultSet rs = preparedStatement.executeQuery();
 
         Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
-        table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Import Date", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.setColumnWidth(0, 30, 30);
+        table.setColumnWidth(1, 30, 30);
+        table.setColumnWidth(2, 30, 30);
+        table.setColumnWidth(3, 30, 30);
+        table.setColumnWidth(4, 30, 30);
+        table.addCell(red+ "ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell(red+ "Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell(red+ "Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell(red+ "Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell(red+ "Import Date"+reset, new CellStyle(CellStyle.HorizontalAlign.CENTER));
 
         int id = 0;
         String name = "";
@@ -255,11 +271,11 @@ public class Controller {
             qty = rs.getInt("stock_qty");
             date = String.valueOf(rs.getDate("imported_date"));
 
-            table.addCell(String.valueOf(id), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-            table.addCell(name, new CellStyle(CellStyle.HorizontalAlign.CENTER));
-            table.addCell(String.valueOf(price) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-            table.addCell(String.valueOf(qty), new CellStyle(CellStyle.HorizontalAlign.CENTER));
-            table.addCell(date, new CellStyle(CellStyle.HorizontalAlign.CENTER));
+            table.addCell(yellow+ String.valueOf(id), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+            table.addCell(green + name, new CellStyle(CellStyle.HorizontalAlign.CENTER));
+            table.addCell(green+ String.valueOf(price) + "$", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+            table.addCell(green+ String.valueOf(qty), new CellStyle(CellStyle.HorizontalAlign.CENTER));
+            table.addCell(green+ date, new CellStyle(CellStyle.HorizontalAlign.CENTER));
 
             System.out.println(table.render());
         } else {

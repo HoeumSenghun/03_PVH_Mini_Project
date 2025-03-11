@@ -13,27 +13,34 @@ import java.util.Scanner;
 public class StoreView {
     private Scanner scanner = new Scanner(System.in);
     CellStyle center = new CellStyle(CellStyle.HorizontalAlign.CENTER);
+    final String red = "\u001b[31m";
+    final String green = "\u001b[32m";
+    final String yellow = "\u001b[33m";
+    final String reset = "\u001b[0m";
+    final String blue = "\u001B[34m";
+    CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.CENTER);
 
     public void displayProducts(List<Product> products) {
-        Table table = new Table(5, BorderStyle.UNICODE_BOX, ShownBorders.ALL);
-        table.setColumnWidth(0,15,15);
-        table.setColumnWidth(1,15,15);
-        table.setColumnWidth(2,15,15);
-        table.setColumnWidth(3,15,15);
-        table.setColumnWidth(4,15,15);
-        table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Import Date", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+        table.setColumnWidth(0, 30, 30);
+        table.setColumnWidth(1, 30, 30);
+        table.setColumnWidth(2, 30, 30);
+        table.setColumnWidth(3, 30, 30);
+        table.setColumnWidth(4, 30, 30);
+
+        table.addCell(red + "ID", cellStyle);
+        table.addCell(red + "Name" , cellStyle);
+        table.addCell(red + "Unit Price ($)", cellStyle);
+        table.addCell(red + "Quantity", cellStyle);
+        table.addCell(red + "Import Date" + reset , cellStyle);
 
         //Loop Product
         products.stream().forEach(pro -> {
-            table.addCell(String.valueOf(pro.getId()),center );
-            table.addCell(pro.getName(),center);
-            table.addCell(String.valueOf(pro.getPrice())+"$",center );
-            table.addCell(String.valueOf(pro.getQuantity()),center );
-            table.addCell(String.valueOf(pro.getImportDate()),center );
+            table.addCell(yellow + pro.getId(),center );
+            table.addCell(green + pro.getName(),center);
+            table.addCell(green + pro.getPrice(),center );
+            table.addCell(green + pro.getQuantity(),center );
+            table.addCell(green + pro.getImportDate(),center );
         });
 
         // Print table
@@ -41,12 +48,21 @@ public class StoreView {
     }
 
     public void displayMenu() {
-        System.out.println("            --------- Menu ---------            ");
-        System.out.println(" N) Next Page   P) Previous Page   F) First Page   L) Last Page");
-        System.out.println(" W) Write       R) Read (id)        U) Update      D) Delete");
-        System.out.println(" S) Search(name)   Se) Set rows  sa) Save    Un) UnSaved  Ba) Backup   Re) Restore");
-        System.out.println(" E) Exit");
-        System.out.println("-----------------------------------------------");
+        Table table = new Table(1, BorderStyle.UNICODE_BOX_WIDE, ShownBorders.SURROUND_HEADER_AND_COLUMNS);
+        table.setColumnWidth(0, 100, 130);
+        System.out.println("\n");
+        table.addCell(blue + "--------- Menu ---------", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.addCell(green + " N) Next Page        P) Previous Page            F) First Page     L) Last Page", new CellStyle(CellStyle.HorizontalAlign.LEFT));
+        table.addCell(yellow + " W) Write            R) Read (id)                U) Update         D) Delete", new CellStyle(CellStyle.HorizontalAlign.LEFT));
+        table.addCell(" S) Search(name)     Se) Set rows  sa) Save      Un) UnSaved       Ba) Backup      Re) Restore", new CellStyle(CellStyle.HorizontalAlign.LEFT));
+        table.addCell(red + " E) Exit" + reset, new CellStyle(CellStyle.HorizontalAlign.LEFT));
+
+        System.out.println(table.render());
+
+//        System.out.println();
+//        System.out.println();
+//        System.out.println();
+//        System.out.println("-----------------------------------------------");
     }
 
     public String getUserChoice() {
@@ -56,23 +72,24 @@ public class StoreView {
 
     public void searchProductByName(List<Product> products){
         // Table header
-        Table table = new Table(5, BorderStyle.UNICODE_BOX, ShownBorders.SURROUND_HEADER_FOOTER_AND_COLUMNS);
-        table.setColumnWidth(0,15,15);
-        table.setColumnWidth(1,15,15);
-        table.setColumnWidth(2,15,15);
-        table.setColumnWidth(3,15,15);
-        table.setColumnWidth(4,15,15);
-        table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Import Date", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+        table.setColumnWidth(0, 30, 30);
+        table.setColumnWidth(1, 30, 30);
+        table.setColumnWidth(2, 30, 30);
+        table.setColumnWidth(3, 30, 30);
+        table.setColumnWidth(4, 30, 30);
+        table.addCell("ID", cellStyle);
+        table.addCell("Name", cellStyle);
+        table.addCell("Unit Price ($)", cellStyle);
+        table.addCell("Quantity", cellStyle);
+        table.addCell("Import Date", cellStyle);
+
 
         //Loop Product
         products.stream().forEach(pro -> {
             table.addCell(String.valueOf(pro.getId()),center );
             table.addCell(pro.getName(),center);
-            table.addCell(String.valueOf(pro.getPrice())+"$",center );
+            table.addCell(String.valueOf(pro.getPrice()),center );
             table.addCell(String.valueOf(pro.getQuantity()),center );
             table.addCell(String.valueOf(pro.getImportDate()),center );
 
@@ -82,15 +99,20 @@ public class StoreView {
 
     public void displayTableRow(Optional<Product> product) {
         Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
-        table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Name", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Unit Price ($)", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Quantity", new CellStyle(CellStyle.HorizontalAlign.CENTER));
-        table.addCell("Import Date", new CellStyle(CellStyle.HorizontalAlign.CENTER));
+        table.setColumnWidth(0, 30, 30);
+        table.setColumnWidth(1, 30, 30);
+        table.setColumnWidth(2, 30, 30);
+        table.setColumnWidth(3, 30, 30);
+        table.setColumnWidth(4, 30, 30);
+        table.addCell("ID", cellStyle);
+        table.addCell("Name", cellStyle);
+        table.addCell("Unit Price ($)", cellStyle);
+        table.addCell("Quantity", cellStyle);
+        table.addCell("Import Date", cellStyle);
 
         table.addCell(String.valueOf(product.get().getId()),center );
         table.addCell(String.valueOf(product.get().getName()),center );
-        table.addCell(String.valueOf(product.get().getPrice())+"$",center );
+        table.addCell(String.valueOf(product.get().getPrice()),center );
         table.addCell(String.valueOf(product.get().getQuantity()),center );
         table.addCell(String.valueOf(product.get().getImportDate()),center );
 

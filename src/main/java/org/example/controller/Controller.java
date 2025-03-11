@@ -28,7 +28,6 @@ public class Controller {
     private StoreView storeView;
     Scanner scanner = new Scanner(System.in);
     List<Product> tempProduct = new ArrayList<>();
-    int id;
     String name;
     double price;
     int qty;
@@ -52,18 +51,29 @@ public class Controller {
 
     public void readProduct(){
         // read product to unsaved
-        System.out.println("Enter id:");
+        System.out.print("Enter id: ");
         int productId = scanner.nextInt();
         Optional<Product>  product =  productModel.getProductById(productId);
         storeView.displayTableRow(product);
+        System.out.print("Enter to continues... ");
+        scanner.nextLine();
 
     }
-    public void writeProduct(Unsave unsave){
+    public void writeProduct(Unsave unsave) throws SQLException {
         // write product
-        id = tempProduct.size();
+        int id = 0;
+        String query = "SELECT MAX(id) FROM stock_tb;";
+        try(Statement stm = Utils.connection().createStatement()){
+            ResultSet rs = stm.executeQuery(query);
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        }catch (SQLException e) {
+            System.out.println("there are something wrong with the connection");
+        }
         date = String.valueOf(LocalDate.now());
         System.out.println("==========) INSERT AN PRODUCT (==========");
-        System.out.println("ID:\t" + id);
+        System.out.println("ID:\t" + (id + 1));
         System.out.print("Input Product Name: ");
         name = scanner.next();
         scanner.nextLine();
@@ -77,6 +87,8 @@ public class Controller {
         tempProduct.add(new Product(id, name, price, qty, date));
         storeView.displayProducts(tempProduct);
         unsave.unSaveProducts.add(new Product(id, name, price, qty, date));
+        System.out.print("Press Enter to continues...");
+        scanner.nextLine();
     }
     public void saveProduct(Unsave unsave) throws SQLException {
         String saveOption;
@@ -88,9 +100,6 @@ public class Controller {
             case "ui":
                 if (unsave.unSaveProducts.size() > 0) {
                     for (Product product : unsave.unSaveProducts) {
-//                        product.getName();
-//                        product.getPrice();
-//                        product.getQuantity();
                         try(PreparedStatement preparedStatement = Utils.connection().prepareStatement("INSERT INTO stock_tb(name,unit_price,stock_qty) VALUES (?,?,?)")){
                             preparedStatement.setString(1, product.getName());
                             preparedStatement.setDouble(2, product.getPrice());
@@ -114,10 +123,6 @@ public class Controller {
             case "uu":
                 if (unsave.unSaveUpdate.size() > 0) {
                     for (UpdateProduct updateProduct : unsave.unSaveUpdate) {
-//                        updateProduct.getId();
-//                        updateProduct.getName();
-//                        updateProduct.getPrice();
-//                        updateProduct.getQuantity();
                         try(PreparedStatement preparedStatement = Utils.connection().prepareStatement("UPDATE stock_tb SET name = ? , unit_price = ?, stock_qty = ? WHERE id = ?")){
                             preparedStatement.setString(1, updateProduct.getName());
                             preparedStatement.setDouble(2, updateProduct.getPrice());

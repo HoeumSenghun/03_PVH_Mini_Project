@@ -31,7 +31,7 @@ public class StoreView {
         products.stream().forEach(pro -> {
             table.addCell(String.valueOf(pro.getId()),center );
             table.addCell(pro.getName(),center);
-            table.addCell(String.valueOf(pro.getPrice()),center );
+            table.addCell(String.valueOf(pro.getPrice())+"$",center );
             table.addCell(String.valueOf(pro.getQuantity()),center );
             table.addCell(String.valueOf(pro.getImportDate()),center );
         });
@@ -72,7 +72,7 @@ public class StoreView {
         products.stream().forEach(pro -> {
             table.addCell(String.valueOf(pro.getId()),center );
             table.addCell(pro.getName(),center);
-            table.addCell(String.valueOf(pro.getPrice()),center );
+            table.addCell(String.valueOf(pro.getPrice())+"$",center );
             table.addCell(String.valueOf(pro.getQuantity()),center );
             table.addCell(String.valueOf(pro.getImportDate()),center );
 
@@ -90,7 +90,7 @@ public class StoreView {
 
         table.addCell(String.valueOf(product.get().getId()),center );
         table.addCell(String.valueOf(product.get().getName()),center );
-        table.addCell(String.valueOf(product.get().getPrice()),center );
+        table.addCell(String.valueOf(product.get().getPrice())+"$",center );
         table.addCell(String.valueOf(product.get().getQuantity()),center );
         table.addCell(String.valueOf(product.get().getImportDate()),center );
 

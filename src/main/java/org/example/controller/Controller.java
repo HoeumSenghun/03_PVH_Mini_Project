@@ -82,27 +82,61 @@ public class Controller {
         String saveOption;
         System.out.println("[UI] for save Insert and [UU] for save update");
         saveOption = scanner.nextLine().toLowerCase();
+        List<Product> toRemove = new ArrayList<>();
+        List<UpdateProduct> toRemoveUpdate = new ArrayList<>();
         switch (saveOption) {
             case "ui":
                 if (unsave.unSaveProducts.size() > 0) {
                     for (Product product : unsave.unSaveProducts) {
-                        product.getName();
-                        product.getPrice();
-                        product.getQuantity();
-                        PreparedStatement preparedStatement = Utils.connection().prepareStatement("INSERT INTO stock_tb(name,unit_price,stock_qty) VALUES (?,?,?)");
-                        preparedStatement.setString(1, product.getName());
-                        preparedStatement.setDouble(2, product.getPrice());
-                        preparedStatement.setInt(3, product.getQuantity());
-                        try{
-                            preparedStatement.executeQuery();
-                            System.out.println(product.getName() + "has been save successfully");
+//                        product.getName();
+//                        product.getPrice();
+//                        product.getQuantity();
+                        try(PreparedStatement preparedStatement = Utils.connection().prepareStatement("INSERT INTO stock_tb(name,unit_price,stock_qty) VALUES (?,?,?)")){
+                            preparedStatement.setString(1, product.getName());
+                            preparedStatement.setDouble(2, product.getPrice());
+                            preparedStatement.setInt(3, product.getQuantity());
+                            int rowsAffected = preparedStatement.executeUpdate();
+                            if (rowsAffected > 0) {
+                                System.out.println(product.getName() + " has been saved successfully.");
+                                toRemove.add(product);
+                            }
                         }catch (SQLException e){
-                            System.out.println(e.getMessage());
+                            System.out.print("failed to save product");
                         }
-                        unsave.unSaveProducts.remove(product);
-                        break;
                     }
+                }else {
+                    System.out.println("There are nothing to save");
                 }
+                unsave.unSaveProducts.removeAll(toRemove);
+                System.out.print("Press Enter to continue...");
+                scanner.nextLine();
+                break;
+            case "uu":
+                if (unsave.unSaveUpdate.size() > 0) {
+                    for (UpdateProduct updateProduct : unsave.unSaveUpdate) {
+//                        updateProduct.getId();
+//                        updateProduct.getName();
+//                        updateProduct.getPrice();
+//                        updateProduct.getQuantity();
+                        try(PreparedStatement preparedStatement = Utils.connection().prepareStatement("UPDATE stock_tb SET name = ? , unit_price = ?, stock_qty = ? WHERE id = ?")){
+                            preparedStatement.setString(1, updateProduct.getName());
+                            preparedStatement.setDouble(2, updateProduct.getPrice());
+                            preparedStatement.setInt(3, updateProduct.getQuantity());
+                            preparedStatement.setInt(4,updateProduct.getId());
+                            int rowsAffected = preparedStatement.executeUpdate();
+                            if (rowsAffected > 0) {
+                                System.out.println(updateProduct.getName() + " has been Update successfully.");
+                                toRemoveUpdate.add(updateProduct);
+                            }
+                        }catch (SQLException e){
+                            e.printStackTrace();
+                            System.out.print("failed to update product");
+                        }
+                    }
+                }else {
+                    System.out.println("There are nothing to update");
+                }
+                unsave.unSaveUpdate.removeAll(toRemoveUpdate);
                 System.out.print("Press Enter to continue...");
                 scanner.nextLine();
                 break;
@@ -120,9 +154,7 @@ public class Controller {
 
                 break;
             }
-
             System.out.println("Invalid option! ");
-
         }
         Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
         table.addCell("ID", new CellStyle(CellStyle.HorizontalAlign.CENTER));

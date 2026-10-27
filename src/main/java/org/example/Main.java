@@ -1,36 +1,66 @@
 package org.example;
 
-import java.sql.Connection;
+import org.example.model.Product;
+import org.example.model.ProductModel;
+import org.example.model.Unsave;
+import org.example.view.StoreView;
+import org.example.controller.Controller;
 
-import java.io.IOException;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        String url = "jdbc:postgresql://localhost:5432/stockManagement_db";
-        String username = "postgres";
-        String password = "root";
-        Connection con = null;
+    public static void main(String[] args) throws SQLException{
+        Scanner sc = new Scanner(System.in);
+        StoreView view = new StoreView();
+        ProductModel model = new ProductModel();
+        System.out.println(model.getProducts());
+        boolean running = true;
+        Unsave unsave = new Unsave();
 
-        try {
-            //Load Driver
-            Class.forName("org.postgresql.Driver");
-            //Connection
-            con = DriverManager.getConnection(url, username, password);
-            if(con.isValid(2)) {
-                System.out.println("Connection Successful");
-            }
+        while (running) {
+            Controller controller = new Controller(model, view);
+            controller.displayProductData();
+            view.displayMenu();
+            String choice = view.getUserChoice();
 
-        } catch (ClassNotFoundException | SQLException e) {
-
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) { // Corrected exception
-                e.printStackTrace();
+            switch (choice) {
+                case "W":
+                    controller.writeProduct(unsave);
+                    break;
+                case "R":
+                    controller.readProduct();
+                    break;
+                case "U":
+                    controller.updateProduct(unsave);
+                    break;
+                case "D":
+                    controller.deleteProduct();
+                    break;
+                case "N":
+//                    controller.nextPage();
+                    break;
+                case "P":
+//                    controller.previousPage();
+                    break;
+                case "S":
+                    System.out.print("Input Product Name:");
+                    String name = sc.nextLine();
+                    controller.searchProduct(name);
+                    break;
+                case "SA" :
+                    controller.saveProduct(unsave);
+                    break;
+                case "UN":
+                    controller.unSaveProduct(unsave);
+                    break;
+                case "E":
+                    System.out.println("Exiting... Goodbye!");
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid option! Please choose again.");
             }
         }
     }
